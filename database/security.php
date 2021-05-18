@@ -83,7 +83,7 @@ class AuthDB
         return;
     }
 
-    function getUserFromEmail(string $email): array
+    function getUserFromEmail(string $email): array | false
     {
         $this->statementReadUserFromEmail->bindValue(':email', $email);
         $this->statementReadUserFromEmail->execute();
