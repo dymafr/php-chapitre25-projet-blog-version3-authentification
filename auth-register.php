@@ -1,6 +1,6 @@
 <?php
-$pdo = require_once '/database/database.php';
-$authDB = require_once '/database/security.php';
+require_once __DIR__ . '/database/database.php';
+$authDB = require_once __DIR__ . '/database/security.php';
 
 const ERROR_REQUIRED = 'Veuillez renseigner ce champ';
 const ERROR_TOO_SHORT = 'Ce champ est trop court';
