@@ -1,12 +1,13 @@
 <?php
-require_once __DIR__ . '/database/database.php';
 $authDB = require_once __DIR__ . '/database/security.php';
 
 const ERROR_REQUIRED = 'Veuillez renseigner ce champ';
 const ERROR_TOO_SHORT = 'Ce champ est trop court';
 const ERROR_PASSWORD_TOO_SHORT = 'Le mot de passe doit faire au moins 6 caractères';
+const ERROR_PASSWORD_TOO_WEAK = 'Le mot de passe doit comporter au moins une minuscule, une majuscule et un chiffre';
 const ERROR_PASSWORD_MISMATCH = 'Le mot de passe de confirmation est différent';
 const ERROR_EMAIL_INVALID = 'L\'email n\'est pas valide';
+const ERROR_EMAIL_TAKEN = 'L\'email existe déjà';
 
 $errors = [
     'firstname' => '',
@@ -42,11 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['email'] = ERROR_REQUIRED;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = ERROR_EMAIL_INVALID;
+    } elseif ($authDB->getUserFromEmail($email)) {
+        $errors['email'] = ERROR_EMAIL_TAKEN;
     }
     if (!$password) {
         $errors['password'] = ERROR_REQUIRED;
     } elseif (mb_strlen($password) < 6) {
         $errors['password'] = ERROR_PASSWORD_TOO_SHORT;
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$/', $password)) {
+        $errors['password'] = ERROR_PASSWORD_TOO_WEAK;
     }
     if (!$confirmpassword) {
         $errors['confirmpassword'] = ERROR_REQUIRED;
