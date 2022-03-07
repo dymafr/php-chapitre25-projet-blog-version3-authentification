@@ -35,11 +35,11 @@ if ($id) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $_POST = filter_input_array(INPUT_POST, [
-        'title' => FILTER_SANITIZE_STRING,
+        'title' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'image' => FILTER_SANITIZE_URL,
-        'category' => FILTER_SANITIZE_STRING,
+        'category' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'content' => [
-            'filter' => FILTER_SANITIZE_STRING,
+            'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'flags' => FILTER_FLAG_NO_ENCODE_QUOTES
         ]
     ]);
